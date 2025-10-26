@@ -18,36 +18,44 @@ def start_bot():
     """Запуск бота"""
     try:
         print("🚀 Starting psychology bot...")
-        time.sleep(5)  # Даем время всему запуститься
+        time.sleep(3)  # Даем время для инициализации
         
-        print("1️⃣ Checking environment...")
-        print(f"   TELEGRAM_TOKEN: {'✅' if os.getenv('TELEGRAM_TOKEN') else '❌'}")
-        print(f"   DEEPSEEK_API_KEY: {'✅' if os.getenv('DEEPSEEK_API_KEY') else '❌'}")
+        print("🔍 Step 1: Checking environment variables...")
+        telegram_token = os.getenv('TELEGRAM_TOKEN')
+        deepseek_key = os.getenv('DEEPSEEK_API_KEY')
         
-        print("2️⃣ Importing modules...")
-        try:
-            from bot_deepseek import DeepSeekPsychoBot
-            print("   ✅ bot_deepseek imported")
-        except ImportError as e:
-            print(f"   ❌ Import error: {e}")
+        print(f"   TELEGRAM_TOKEN: {'✅ SET' if telegram_token else '❌ MISSING'}")
+        print(f"   DEEPSEEK_API_KEY: {'✅ SET' if deepseek_key else '❌ MISSING'}")
+        
+        if not telegram_token or not deepseek_key:
+            print("❌ CRITICAL: Missing environment variables!")
             return
         
-        print("3️⃣ Creating bot instance...")
+        print("🔍 Step 2: Importing bot module...")
+        try:
+            from bot_deepseek import DeepSeekPsychoBot
+            print("   ✅ Import successful")
+        except Exception as e:
+            print(f"   ❌ Import failed: {e}")
+            traceback.print_exc()
+            return
+        
+        print("🔍 Step 3: Creating bot instance...")
         try:
             bot = DeepSeekPsychoBot()
             print("   ✅ Bot instance created")
         except Exception as e:
-            print(f"   ❌ Bot creation error: {e}")
+            print(f"   ❌ Bot creation failed: {e}")
             traceback.print_exc()
             return
         
-        print("4️⃣ Starting message processing...")
+        print("🔍 Step 4: Starting message processing...")
         try:
             bot.process_updates()
         except Exception as e:
-            print(f"   ❌ Process updates error: {e}")
+            print(f"   ❌ Process updates failed: {e}")
             traceback.print_exc()
-        
+            
     except Exception as e:
         print(f"❌ UNEXPECTED ERROR: {e}")
         traceback.print_exc()
@@ -63,4 +71,4 @@ if __name__ == '__main__':
     # Запускаем Flask
     port = int(os.getenv('PORT', 10000))
     print(f"🌐 Flask starting on port {port}")
-    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
+    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False, threaded=True)
