@@ -1,16 +1,4 @@
 import os
-import signal
-import sys
-
-# Обработка graceful shutdown
-def signal_handler(sig, frame):
-    print('🛑 Получен сигнал завершения...')
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, signal_handler)
-signal.signal(signal.SIGTERM, signal_handler)
-
-
 import logging
 import requests
 import time
@@ -980,6 +968,7 @@ if __name__ == '__main__':
     # Запускаем бота в основном потоке
     print("🚀 Starting bot with health server...")
     main()
+
 
 
 
