@@ -15,6 +15,7 @@ import logging
 import requests
 import time
 from dotenv import load_dotenv
+from flask import jsonify
 from database import SubscriptionManager
 from interface import BotInterface
 from knowledge_base import PsychologyKnowledgeBase
@@ -952,12 +953,22 @@ class HealthHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass  # Отключаем логирование
 
+# Health server для Render
 def start_health_server():
-    """Запускает простой HTTP-сервер для здоровья"""
+    """Простой HTTP сервер для удовлетворения Render"""
+    app = Flask(__name__)
+    
+    @app.route('/health')
+    def health():
+        return jsonify({"status": "ok", "service": "psychology-bot"})
+    
+    @app.route('/')
+    def home():
+        return "🤖 Psychology Bot is running..."
+    
     port = int(os.getenv('PORT', 10000))
-    server = HTTPServer(('0.0.0.0', port), HealthHandler)
-    print(f"🌐 Health server started on port {port}")
-    server.serve_forever()
+    print(f"🌐 Health server starting on port {port}")
+    app.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == '__main__':
     # Запускаем health server в отдельном потоке
@@ -966,5 +977,7 @@ if __name__ == '__main__':
     health_thread.start()
     
     # Запускаем бота в основном потоке
+    print("🚀 Starting bot with health server...")
     main()
+
 
