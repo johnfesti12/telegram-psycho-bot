@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 import os
 import threading
 import time
+import traceback
 
 app = Flask(__name__)
 
@@ -17,9 +18,16 @@ def start_bot():
     """Запуск бота с максимальной отладкой"""
     try:
         print("🎯 BOT INITIALIZATION STARTED")
-        time.sleep(2)
+        
+        print("🔍 STEP 1: Basic imports...")
+        import sys
+        print(f"   Python path: {sys.path}")
+        
+        print("🔍 STEP 2: Checking environment...")
+        time.sleep(1)
         
         # Проверка переменных
+        print("🔍 STEP 3: Reading environment variables...")
         TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
         DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
         
@@ -30,14 +38,14 @@ def start_bot():
             print("❌ MISSING ENV VARIABLES")
             return
         
-        print("📦 IMPORTING BOT...")
+        print("📦 STEP 4: Importing bot...")
         from bot_deepseek import DeepSeekPsychoBot
         
-        print("🔧 CREATING BOT INSTANCE...")
+        print("🔧 STEP 5: Creating bot instance...")
         bot = DeepSeekPsychoBot()
         print("✅ BOT INSTANCE CREATED")
         
-        print("🚀 STARTING MESSAGE PROCESSING...")
+        print("🚀 STEP 6: Starting message processing...")
         bot.process_updates()
         
     except Exception as e:
