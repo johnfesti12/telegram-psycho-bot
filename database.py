@@ -155,7 +155,7 @@ class SubscriptionManager:
             print(f"   {line.strip()}")
         
         # АДМИНЫ ВСЕГДА МОГУТ ОТПРАВЛЯТЬ СООБЩЕНИЯ
-        ADMIN_IDS = [000000000] #309524694
+        ADMIN_IDS = [309524694] #309524694
         if user_id in ADMIN_IDS:
             print(f"🔵 DEBUG: Админ {user_id} - безлимитный доступ")
             return True, 0, float('inf'), 'premium', 365
@@ -719,4 +719,5 @@ class SubscriptionManager:
                 
         except Exception as e:
             print(f"❌ Ошибка создания/обновления пользователя: {e}")
+
             return False
