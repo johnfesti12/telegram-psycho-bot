@@ -378,7 +378,7 @@ class DeepSeekPsychoBot:
                                 elif text and text != "/start" and text != "/menu":
                                     
                                     # СПИСОК АДМИНОВ - ДОБАВЬТЕ В НАЧАЛО ЭТОГО БЛОКА
-                                    ADMIN_IDS = [0000000]  # Замените на ваш ID 309524694
+                                    ADMIN_IDS = [309524694]  # Замените на ваш ID 309524694
                                     
                                     # Обработка админ-команд (не считаются за сообщения)
                                     if text.startswith("/admin") or text.startswith("/add_premium") or text.startswith("/remove_premium") or text.startswith("/debug") or text.startswith("/reset_counter") or text.startswith("/setup_webhook") or text.startswith("/webhook_status") or text.startswith("/payment_info"):
@@ -967,3 +967,4 @@ if __name__ == '__main__':
     
     # Запускаем бота в основном потоке
     main()
+
