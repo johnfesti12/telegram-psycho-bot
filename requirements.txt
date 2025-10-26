@@ -1,0 +1,7 @@
+requests
+python-dotenv
+pypdf2
+python-docx
+pdfplumber
+python-telegram-bot==13.7
+openai
