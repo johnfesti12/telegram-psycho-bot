@@ -936,5 +936,34 @@ def main():
 
     print("🔴 Бот остановлен")
 
-if __name__ == '__main__':    
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+class HealthHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/health':
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'OK')
+        else:
+            self.send_response(404)
+            self.end_headers()
+    
+    def log_message(self, format, *args):
+        pass  # Отключаем логирование
+
+def start_health_server():
+    """Запускает простой HTTP-сервер для здоровья"""
+    port = int(os.getenv('PORT', 10000))
+    server = HTTPServer(('0.0.0.0', port), HealthHandler)
+    print(f"🌐 Health server started on port {port}")
+    server.serve_forever()
+
+if __name__ == '__main__':
+    # Запускаем health server в отдельном потоке
+    health_thread = threading.Thread(target=start_health_server)
+    health_thread.daemon = True
+    health_thread.start()
+    
+    # Запускаем бота в основном потоке
     main()
