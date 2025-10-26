@@ -952,7 +952,8 @@ class HealthHandler(BaseHTTPRequestHandler):
     
     def log_message(self, format, *args):
         pass  # Отключаем логирование
-
+        
+from flask import Flask
 # Health server для Render
 def start_health_server():
     """Простой HTTP сервер для удовлетворения Render"""
@@ -979,5 +980,6 @@ if __name__ == '__main__':
     # Запускаем бота в основном потоке
     print("🚀 Starting bot with health server...")
     main()
+
 
 
