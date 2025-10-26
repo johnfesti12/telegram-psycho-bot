@@ -53,15 +53,27 @@ def initialize_bot():
 
 # Глобальная переменная
 bot_instance = None
+bot_started = False
 
-@app.before_first_request
+@app.before_request
 def start_bot_processing():
     """Запуск обработки сообщений при первом запросе"""
-    global bot_instance
-    if bot_instance:
+    global bot_instance, bot_started
+    
+    if not bot_started and bot_instance:
         print("🚀 STARTING MESSAGE PROCESSING...")
+        bot_started = True
         try:
-            bot_instance.process_updates()
+            # Запускаем в отдельном потоке чтобы не блокировать запросы
+            import threading
+            def run_bot():
+                bot_instance.process_updates()
+            
+            bot_thread = threading.Thread(target=run_bot)
+            bot_thread.daemon = True
+            bot_thread.start()
+            print("✅ BOT PROCESSING STARTED IN BACKGROUND")
+            
         except Exception as e:
             print(f"❌ PROCESS ERROR: {e}")
             traceback.print_exc()
