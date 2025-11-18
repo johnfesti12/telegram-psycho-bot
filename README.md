@@ -13,4 +13,5 @@
 ## Контакты
 
 - Разработчик: @danilskopov
-- Бот: @your_bot
+- Бот: @your_sweet_PsychoBot
+
